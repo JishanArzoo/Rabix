@@ -34,13 +34,13 @@ Don't unnecessarily repeat yourself.
         `,
         },
         {
-          role: "User",
+          role: "user",
           content: message,
         },
       ],
 
       max_tokens: 512,
-      temperature: 0.7,
+      temperature: 0.5,
     });
 
     const encoder = new TextEncoder();
