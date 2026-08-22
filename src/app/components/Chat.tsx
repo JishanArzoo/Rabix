@@ -123,7 +123,7 @@ export default function Chat() {
 
   return (
   <div className="flex h-full flex-col">
-    <section className="flex-1 min-h-0 overflow-y-auto px-6 py-8">
+    <section className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-6 py-8">
       <div className="mx-auto max-w-3xl">
         {messages.map((message, index) => (
           <Message
