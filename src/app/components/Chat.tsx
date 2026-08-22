@@ -122,51 +122,20 @@ export default function Chat() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col bg-white">
-      {/* Header */}
+  <div className="flex h-full flex-col">
+    <section className="flex-1 min-h-0 overflow-y-auto px-6 py-8">
+      <div className="mx-auto max-w-3xl">
+        {messages.map((message, index) => (
+          <Message
+            key={index}
+            message={message}
+            isStreaming={isStreaming && index === messages.length - 1}
+          />
+        ))}
+      </div>
+    </section>
 
-      <header className="border-b px-6 py-4">
-        <div className="mx-auto max-w-3xl flex flex-row justify-around">
-          <h1 className="text-xl font-bold">
-            RABIX
-          </h1>
-
-          <a href="https://github.com/JishanArzoo">
-            <h3 className="font-bold text-xl bg-[linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb,#6366f1)] bg-clip-text text-transparent">
-            by Jishan
-          </h3>
-          </a>
-
-          
-        </div>
-      </header>
-
-      {/* Messages */}
-
-      <section className="flex-1 overflow-y-auto px-6 py-8">
-        <div className="mx-auto max-w-3xl">
-          {messages.map(
-            (message, index) => (
-              <Message
-                key={index}
-                message={message}
-                isStreaming={
-                  isStreaming &&
-                  index ===
-                    messages.length - 1
-                }
-              />
-            )
-          )}
-        </div>
-      </section>
-
-      {/* Input */}
-
-      <ChatInput
-        onSend={sendMessage}
-        disabled={isStreaming}
-      />
-    </main>
-  );
+    <ChatInput onSend={sendMessage} disabled={isStreaming} />
+  </div>
+);
 }
