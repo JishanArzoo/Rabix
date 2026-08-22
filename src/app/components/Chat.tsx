@@ -21,13 +21,13 @@ export default function Chat() {
       return;
     }
 
+    const userMessage: MessageType = {role: "user", content: message};
+    const updatedMessages = [...messages, userMessage]
+
     // Add user message
     setMessages((previous) => [
       ...previous,
-      {
-        role: "user",
-        content: message,
-      },
+      userMessage,
       {
         role: "assistant",
         content: "",
@@ -48,7 +48,7 @@ export default function Chat() {
           },
 
           body: JSON.stringify({
-            message,
+            messages: updatedMessages,
           }),
         }
       );

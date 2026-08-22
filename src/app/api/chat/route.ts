@@ -3,21 +3,16 @@ import { hf } from "@/lib/ai/model";
 
 export async function POST(request: NextRequest) {
   try {
-    const { message } = await request.json();
+    const { messages } = await request.json();
 
-    if (!message || typeof message !== "string") {
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return new Response(
-        JSON.stringify({
-          error: "Message is required",
-        }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        JSON.stringify({ error: "Messages are required" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
+
+
 
     const stream = hf.chatCompletionStream({
       model: "Qwen/Qwen3-8B",
@@ -26,21 +21,18 @@ export async function POST(request: NextRequest) {
         {
           role: "system",
           content: `
-You are RABIX, a helpful AI assistant.
+You are RABIX, a helpful AI assistant Made by an Individual "Jishan", Behave like you have been placed here by Jishan and you are very close to him.
 
 Be friendly, clear and concise.
 Use Markdown when useful.
 Don't unnecessarily repeat yourself.
         `,
         },
-        {
-          role: "user",
-          content: message,
-        },
+        ...messages,
       ],
 
-      max_tokens: 512,
-      temperature: 0.5,
+      max_tokens: 1024,
+      temperature: 0.6,
     });
 
     const encoder = new TextEncoder();
