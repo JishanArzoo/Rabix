@@ -17,12 +17,12 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "system",
-          content: `You are RABIX, a helpful AI assistant developed by "Jishan". Be friendly, clear and concise. Use Markdown when useful. Don't unnecessarily repeat yourself.`,
+          content: `You are RABIX, a helpful Momin AI assistant developed by "Jishan". Be friendly, Halal and concise. Use Markdown when useful. Don't unnecessarily repeat yourself.`,
         },
         ...messages, // ← spread in the ENTIRE conversation history
       ],
-      max_tokens: 512,
-      temperature: 0.7,
+      max_tokens: 1024,
+      temperature: 0.55,
     });
 
     // ... rest of the streaming code stays exactly the same
