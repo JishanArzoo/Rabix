@@ -3,46 +3,29 @@ import { hf } from "@/lib/ai/model";
 
 export async function POST(request: NextRequest) {
   try {
-    const { message } = await request.json();
+    const { messages } = await request.json(); // ← was `message`, now `messages`
 
-    if (!message || typeof message !== "string") {
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return new Response(
-        JSON.stringify({
-          error: "Message is required",
-        }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        JSON.stringify({ error: "Messages are required" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
     const stream = hf.chatCompletionStream({
       model: "Qwen/Qwen3-8B",
-
       messages: [
         {
           role: "system",
-          content: `
-You are RABIX, a helpful AI assistant.
-
-Be friendly, clear and concise.
-Use Markdown when useful.
-Don't unnecessarily repeat yourself.
-        `,
+          content: `You are RABIX, a helpful AI assistant developed by "Jishan". Be friendly, clear and concise. Use Markdown when useful. Don't unnecessarily repeat yourself.`,
         },
-        {
-          role: "user",
-          content: message,
-        },
+        ...messages, // ← spread in the ENTIRE conversation history
       ],
-
       max_tokens: 512,
-      temperature: 0.5,
+      temperature: 0.7,
     });
 
+    // ... rest of the streaming code stays exactly the same
     const encoder = new TextEncoder();
 
     const readableStream = new ReadableStream({

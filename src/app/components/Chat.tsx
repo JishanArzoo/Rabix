@@ -17,41 +17,33 @@ export default function Chat() {
     useState(false);
 
   async function sendMessage(message: string) {
-    if (!message.trim() || isStreaming) {
-      return;
-    }
+  if (!message.trim() || isStreaming) {
+    return;
+  }
 
-    // Add user message
-    setMessages((previous) => [
-      ...previous,
-      {
-        role: "user",
-        content: message,
-      },
-      {
-        role: "assistant",
-        content: "",
-      },
-    ]);
+  // Build the new message list explicitly first
+  const userMessage: MessageType = { role: "user", content: message };
+  const updatedMessages = [...messages, userMessage];
 
-    setIsStreaming(true);
+  // Add user message + empty assistant placeholder to the UI
+  setMessages((previous) => [
+    ...previous,
+    userMessage,
+    { role: "assistant", content: "" },
+  ]);
 
-    try {
-      const response = await fetch(
-        "/api/chat",
-        {
-          method: "POST",
+  setIsStreaming(true);
 
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: updatedMessages, // ← send the FULL history, not just one message
+      }),
+    });
 
-          body: JSON.stringify({
-            message,
-          }),
-        }
-      );
+    // ...rest stays exactly the same
 
       if (!response.ok) {
         throw new Error(
@@ -126,10 +118,13 @@ export default function Chat() {
       {/* Header */}
 
       <header className="border-b px-6 py-4">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-3xl flex flex-row justify-around">
           <h1 className="text-xl font-bold">
-            RABIX-DEV
+            RABIX
           </h1>
+          <h4 className="font-semibold text-xl">
+            by Jishan
+          </h4>
         </div>
       </header>
 
