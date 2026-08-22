@@ -131,9 +131,13 @@ export default function Chat() {
             RABIX
           </h1>
 
-          <h3 className="font-bold text-xl bg-[linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb,#6366f1)] bg-clip-text text-transparent">
+          <a href="https://github.com/JishanArzoo">
+            <h3 className="font-bold text-xl bg-[linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb,#6366f1)] bg-clip-text text-transparent">
             by Jishan
           </h3>
+          </a>
+
+          
         </div>
       </header>
 
